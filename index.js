@@ -7,7 +7,7 @@ const { query } = require('express')
 const route = require('./routes/index')
 const db = require('./config/db/index')
 const methodOverride = require('method-override')
-const port = 3000
+const port = process.env.PORT || 3000
 //Connext to database
 db.connect()
 //
