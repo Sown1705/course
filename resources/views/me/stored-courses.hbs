@@ -1,0 +1,67 @@
+<div class="mt-4">
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th scope="col">STT</th>
+        <th scope="col">Tên khóa học</th>
+        <th scope="col">Mô tả</th>
+        <th scope="col" colspan="3">Thời gian tạo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each course}}
+      <tr>
+        <th scope="row">{{sum @index 1}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.description}}</td>
+        <td>{{this.createdAt}}</td>
+        <td>
+          <a href="/course/{{this._id}}/edit" class="btn btn-link">Sửa</a>
+        </td>
+        <td>
+          <a href="#" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#delete-course-modal" 
+          data-id={{this._id}} >Xóa</a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+{{!-- confirm delete --}}
+<div class="modal fade" id="delete-course-modal" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Xóa bỏ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Bạn có chắc chắn muốn xóa khóa học này ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="btn-delete-course">Xóa</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- delete hidden form --}}
+<form action="" method="POST" name="delete-course-form"></form>
+<script>
+  var courseID
+  var deleteForm = document.forms['delete-course-form']
+  var deleteCourse = document.getElementById('delete-course-modal');
+      deleteCourse.addEventListener('show.bs.modal', function (event) {
+  var button = event.relatedTarget
+  courseID = button.getAttribute('data-id')
+  console.log(courseID)
+})
+
+var btnDeleteCourse = document.getElementById('btn-delete-course');
+btnDeleteCourse.onclick = function(){
+  deleteForm.action = '/course/'+courseID+'?_method=DELETE';
+  deleteForm.submit();
+}
+</script>
